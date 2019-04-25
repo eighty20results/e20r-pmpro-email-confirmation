@@ -60,6 +60,8 @@ class Shortcode {
 			return HTML_Generator::notLoggedIn( $attributes['not_logged_in_msg'] );
 		}
 		
+		$html = HTML_Generator::createResendForm( $attributes );
+		
 		return $html;
 	}
 }

@@ -42,4 +42,21 @@ class HTML_Generator {
 		
 		return $html;
 	}
+	
+	/**
+	 * Generate "resend email with confirmation link" email form/content
+	 *
+	 * @param array $attributes
+	 *
+	 * @return null|string
+	 */
+	public static function createResendForm( $attributes ) {
+		
+		$html = null;
+		
+		ob_start();
+		
+		$html = ob_get_clean();
+		return $html;
+	}
 }
