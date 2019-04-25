@@ -1,0 +1,30 @@
+{
+  "config": {
+    "vendor-dir": "inc/library"
+  },
+  "name": "eight20results/e20r-pmpro-email-confirmation",
+  "type": "plugin",
+  "description": "Add short code to resend email confirmation message to member if unconfirmed",
+  "keywords": ["wordpress", "paid memberships pro", "email", "confirmation"],
+  "minimum-stability": "stable",
+  "homepage": "https://eighty20results.com",
+  "license": "GPLv2",
+  "authors": [
+    {
+      "name": "Thomas Sjolshagen",
+      "email": "thomas@eighty20results.com",
+      "homepage": "https://eighty20results.com/thomas-sjolshagen",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.1",
+    "yahnis-elsts/plugin-update-checker": ">=4.5"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7",
+    "codeception/codeception": ">=2.2.4",
+    "lucatume/wp-browser": ">=1.15.2",
+    "10up/wp_mock": "^0.4.0"
+  }
+}
