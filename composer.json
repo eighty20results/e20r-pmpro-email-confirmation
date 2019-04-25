@@ -1,10 +1,10 @@
 {
   "config": {
-    "vendor-dir": "inc/library"
+    "vendor-dir": "lib/"
   },
   "name": "eight20results/e20r-pmpro-email-confirmation",
   "type": "plugin",
-  "description": "Add short code to resend email confirmation message to member if unconfirmed",
+  "description": "Add shortcode to resend email confirmation message to member if unconfirmed",
   "keywords": ["wordpress", "paid memberships pro", "email", "confirmation"],
   "minimum-stability": "stable",
   "homepage": "https://eighty20results.com",
