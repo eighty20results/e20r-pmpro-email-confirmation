@@ -11,7 +11,7 @@ services:
         - /tmp:/tmp:cached
         - ./:/var/www/html:cached
         - /Volumes/Development/www/clean.local/wp-content/themes/e20r-coaching:/var/www/html/wp-content/themes/e20r-coaching:cached
-        - /Volumes/Development/www/clean.local/wp-content/plugins/pmpro-email-confirmations:/var/www/html/wp-content/plugins/pmpro-email-confirmation:cached
+        - /Volumes/Development/www/clean.local/wp-content/plugins/pmpro-email-confirmation:/var/www/html/wp-content/plugins/pmpro-email-confirmation:cached
         - /Volumes/Development/www/clean.local/wp-content/plugins/paid-memberships-pro:/var/www/html/wp-content/plugins/paid-memberships-pro:cached
         - /Volumes/Development/www/clean.local/wp-content/plugins/e20r-pmpro-email-confirmation:/var/www/html/wp-content/plugins/e20r-pmpro-email-confirmation:cached
         ports:
@@ -45,7 +45,7 @@ services:
         - /tmp:/tmp:cached
         - ./:/var/www/html:cached
         - /Volumes/Development/www/clean.local/wp-content/themes/e20r-coaching:/var/www/html/wp-content/themes/e20r-coaching:cached
-        - /Volumes/Development/www/clean.local/wp-content/plugins/pmpro-email-confirmations:/var/www/html/wp-content/plugins/pmpro-email-confirmation:cached
+        - /Volumes/Development/www/clean.local/wp-content/plugins/pmpro-email-confirmation:/var/www/html/wp-content/plugins/pmpro-email-confirmation:cached
         - /Volumes/Development/www/clean.local/wp-content/plugins/paid-memberships-pro:/var/www/html/wp-content/plugins/paid-memberships-pro:cached
         - /Volumes/Development/www/clean.local/wp-content/plugins/e20r-pmpro-email-confirmation:/var/www/html/wp-content/plugins/e20r-pmpro-email-confirmation:cached
         labels:
