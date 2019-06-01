@@ -73,15 +73,13 @@ class Email_Confirmation_Shortcode {
 	}
 	
 	/**
-	 * Class auto-loader for the SCBA Customizations plugin
+	 * Class auto-loader for the E20R PMPro Email Confirmation Shortcode plugin
 	 *
 	 * @param string $class_name Name of the class to auto-load
 	 *
 	 * @since  1.0
 	 * @access public static
 	 *
-	 * @since  9.5 - ENHANCEMENT: Change scba_Customizations::autoLoader()
-	 * @since  10.0 - ENHANCEMENT: Add support for Utilities library
 	 */
 	public static function autoLoader( $class_name ) {
 		
@@ -183,17 +181,9 @@ add_action( 'plugins_loaded', array( Email_Confirmation_Shortcode::getInstance()
 if ( ! class_exists( '\\Puc_v4_Factory' ) ) {
 	require 'lib/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
 }
+
 $plugin_updates = \Puc_v4_Factory::buildUpdateChecker(
-	sprintf( 'https://github.com/eighty20results/%s/',Email_Confirmation_Shortcode::plugin_slug ),
+	sprintf( 'https://eighty20results.com/protected-content/%s/metadata.json',Email_Confirmation_Shortcode::plugin_slug ),
 	__FILE__,
 	Email_Confirmation_Shortcode::plugin_slug
 );
-
-// Using a private repository, specify the access token:
-$plugin_updates->setAuthentication( 'your-token-here' );
-
-//Set the branch that contains the stable release (master)
-$plugin_updates->setBranch( 'master' );
-
-$plugin_updates->getVcsApi()->enableReleaseAssets();
-
