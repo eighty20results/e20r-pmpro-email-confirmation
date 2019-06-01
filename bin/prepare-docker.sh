@@ -2,7 +2,7 @@
 DEV_ENVIRONMENT=$(ipconfig getifaddr en0) ; export DEV_ENVIRONMENT
 PROJECT_NAME='e20r-pmpro-email-confirmation' ; export PROJECT_NAME
 PLUGIN_DIR=../docker-env
-PLUGIN_LIST="paid-memberships-pro pmpro-email-confirmation {$PROJECT_NAME}"
+PLUGIN_LIST="paid-memberships-pro pmpro-email-confirmation ${PROJECT_NAME}"
 CURRENT_DIR=$(pwd)
 if [[ ${DEV_ENVIRONMENT} = "192.168.1.87" || ${DEV_ENVIRONMENT} == "192.168.1.50" ]];
 then

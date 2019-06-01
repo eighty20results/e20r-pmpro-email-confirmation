@@ -22,26 +22,9 @@
 namespace E20R\PMPro\Addon\Email_Confirmation;
 
 
+use E20R\PMPro\Addon\Email_Confirmation_Shortcode;
+
 class HTML_Generator {
-	
-	/**
-	 * Generate the HTML to use when displaying the "User must be logged in" message/text
-	 * @param string $msg
-	 *
-	 * @return string
-	 */
-	public static function notLoggedIn( $msg ) {
-		
-		if ( empty( $msg ) ) {
-			return null;
-		}
-		
-		$html = sprintf( '<div class="e20r-ecs-not-logged-in">' );
-		$html .= sprintf( '<p class="e20r-ecs-not-logged-in-text">%1$s</p>', $msg );
-		$html .= sprintf( '</div>' );
-		
-		return $html;
-	}
 	
 	/**
 	 * Generate "resend email with confirmation link" email form/content
@@ -52,11 +35,100 @@ class HTML_Generator {
 	 */
 	public static function createResendForm( $attributes ) {
 		
+		if ( empty( $attributes ) ) {
+			return null;
+		}
+		
+		$wp_user = get_current_user();
+		$html    = array();
+		$use_sms = (bool) $attributes['allow_sms'];
+		
+		$html[] = sprintf( '<div class="e20r-email-confirmation-form">' );
+		$html[] = self::maybeAddLoginWarning( $attributes['not_logged_in_msg'] );
+		$html[] = sprintf( '<h2 class="">%1$s</h2>', esc_html_e( $attributes['header'] ) );
+		$html[] = sprintf( '<form action="" id="e20r-email-confirmation-form" enctype="multipart/form-data">' );
+		$html[] = wp_nonce_field( 'e20r_send_confirmation', 'e20r_email_conf', true, false );
+		
+		if ( true === $use_sms ) {
+			$html[] = sprintf( '<input type="radio" id="e20r-use-sms" name="" value="1">' );
+			$html[] = sprintf( '<label for="e20r-use-sms">%1$s</label>',
+				__( 'Send Text Message', Email_Confirmation_Shortcode::plugin_slug )
+			);
+		}
+		
+		$html[] = sprintf( '<div class="e20r-email-input">' );
+		$html[] = sprintf( '<input type="hidden" name="e20r-user-id" value="%1$d">', $wp_user->ID );
+		$html[] = sprintf( '<input type="email" name="e20r-recipient-email" value="%1$s">', $wp_user->user_email );
+		$html[] = sprintf( '</div>' );
+		
+		if ( true === $use_sms ) {
+		
+			$html[] = sprintf( '<div class="e20r-sms-input">' );
+			$html[] = self::addSMSFields();
+			$html[] = sprintf( '</div>' );
+		}
+		
+		$html[] = sprintf( '<input type="submit" value="%1$s" />', esc_html_e( $attributes['button_text'] ) );
+		$html[] = sprintf( '</form>' );
+		$html[] = sprintf( '</div>' );
+		
+		return empty( $html ) ? null : implode( "\n", $html );
+	}
+	
+	/**
+	 * Add reminder to log in if the user isn't already logged in
+	 *
+	 * @param string $message
+	 *
+	 * @return null|string
+	 */
+	private static function maybeAddLoginWarning( $message ) {
+		
+		if ( is_user_logged_in() ) {
+			return null;
+		}
+		
+		return self::notLoggedIn( $message );
+	}
+	
+	/**
+	 * Generate the HTML to use when displaying the "User must be logged in" message/text
+	 *
+	 * @param string $msg
+	 *
+	 * @return string
+	 */
+	public static function notLoggedIn( $msg ) {
+		
+		if ( empty( $msg ) ) {
+			return null;
+		}
+		
+		$current_page_url = get_permalink();
+		
+		$html   = array();
+		$html[] = sprintf( '<div class="e20r-ecs-not-logged-in">' );
+		$html[] = sprintf( '<p class="e20r-ecs-not-logged-in-text">%1$s</p>', $msg );
+		$html[] = sprintf(
+			'<a class="e20r-ecs-login-link" href="%1$s">$2$s</a>',
+			wp_login_url( $current_page_url ),
+			__( "Log in and return", Email_Confirmation_Shortcode::plugin_slug )
+		);
+		
+		$html[] = sprintf( '</div>' );
+		
+		return implode( "\n", $html );
+	}
+	
+	/**
+	 * Add form fields to support sending the reminder as an SMS
+	 *
+	 * @return null|string
+	 */
+	private static function addSMSFields() {
 		$html = null;
 		
-		ob_start();
-		
-		$html = ob_get_clean();
-		return $html;
+		// TODO: Determine which fields we need to send an SMS and implement them here
+		echo empty( $html ) ? null : implode( "\n", $html );
 	}
 }
