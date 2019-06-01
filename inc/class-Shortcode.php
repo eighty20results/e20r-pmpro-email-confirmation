@@ -25,20 +25,60 @@ use E20R\PMPro\Addon\Email_Confirmation_Shortcode;
 
 class Shortcode {
 	
+	/**
+	 * Class instance (singleton)
+	 *
+	 * @var null|Shortcode
+	 */
 	private static $instance = null;
 	
+	/**
+	 * Header text for the form (H2)
+	 *
+	 * @var null|string
+	 */
 	private $header = null;
 	
+	/**
+	 * Text used on the "submit" button
+	 *
+	 * @var null|string
+	 */
 	private $button_text = null;
 	
+	/**
+	 * The message provided when confirming that the email was sent
+	 *
+	 * @var null|string
+	 */
 	private $confirmation_msg = null;
 	
+	/**
+	 * Add support for SMS (Text) messages with the content (off by default)
+	 *
+	 * @var bool
+	 */
 	private $allow_sms = false;
 	
+	/**
+	 * The message to display if the user isn't logged in
+	 *
+	 * @var null|string
+	 */
 	private $not_logged_in_msg = null;
 	
-	private $target_page_slug = null;
+	/**
+	 * Page slug to redirect the user to after sending the mesage to the user
+	 *
+	 * @var null|string
+	 */
+	private $confirmation_page_slug = null;
 	
+	/**
+	 * Display the entire form (should we exclude SMS or not)
+	 *
+	 * @var bool
+	 */
 	private $full_form = false;
 	
 	/**
@@ -85,13 +125,13 @@ class Shortcode {
 	private function processAttributes( $attributes ) {
 		
 		$attrs = shortcode_atts( array(
-			'header'            => __( 'Please (re)send the Validation EMail for my user', Email_Confirmation_Shortcode::plugin_slug ),
-			'button_text'       => __( 'Re-send validation link', Email_Confirmation_Shortcode::plugin_slug ),
-			'confirmation_msg'  => __( 'If you do not receive the email message, please search through your Junk Mail/Spam folder(s)', Email_Confirmation_Shortcode::plugin_slug ),
-			'allow_sms'         => false,
-			'not_logged_in_msg' => __( 'Please log in to the system', Email_Confirmation_Shortcode::plugin_slug ),
-			'target_page_slug'  => null,
-			'full_form'         => 'yes',
+			'header'                 => __( 'Please (re)send the validation email for my user', Email_Confirmation_Shortcode::plugin_slug ),
+			'button_text'            => __( 'Re-send validation link', Email_Confirmation_Shortcode::plugin_slug ),
+			'confirmation_msg'       => __( 'If you do not receive the email message, please search through your Junk Mail/Spam folder(s)', Email_Confirmation_Shortcode::plugin_slug ),
+			'allow_sms'              => false,
+			'not_logged_in_msg'      => __( 'Please log in to the system', Email_Confirmation_Shortcode::plugin_slug ),
+			'confirmation_page_slug' => null,
+			'full_form'              => 'yes',
 		), $attributes );
 		
 		// Process the class variables and configure them based on the Shortcode attributes (if applicable)
@@ -116,8 +156,8 @@ class Shortcode {
 	private function returnAttrs() {
 		$attributes = array();
 		
-		foreach( get_object_vars( $this ) as $key => $value ) {
-			$attributes[$key] = $value;
+		foreach ( get_object_vars( $this ) as $key => $value ) {
+			$attributes[ $key ] = $value;
 		}
 		
 		return $attributes;
