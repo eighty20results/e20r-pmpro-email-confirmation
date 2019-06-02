@@ -1,17 +1,17 @@
 #!/bin/bash
 # Build script for Eighty/20 Results - E20R MailChimp Integration for Membership Plugins
 #
-short_name="e20r-mailchimp-for-membership-plugins"
-svn_target="e20r-mailchimp-interest-groups-for-paid-memberships-pro-and-woocommerce"
+short_name="e20r-pmpro-email-confirmation"
+svn_target="e20r-pmpro-email-confirmation"
 svn_directory="/Users/sjolshag/PhpStormProjects/svn/"
 svn_full_path="${svn_directory}/${svn_target}/trunk/"
 server="eighty20results.com"
-include=(class css js languages class.${short_name}.php readme.txt)
+include=(class css js languages class-${short_name}.php readme.txt)
 exclude=(*.yml *.phar composer.* vendor lib)
 sed=/usr/bin/sed
 build=(plugin-updates/vendor/*.php)
 plugin_path="${short_name}"
-version=$(egrep "^Version:" ../class.${short_name}.php | sed 's/[[:alpha:]|(|[:space:]|\:]//g' | awk -F- '{printf "%s", $1}')
+version=$(egrep "^Version:" ../class-${short_name}.php | sed 's/[[:alpha:]|(|[:space:]|\:]//g' | awk -F- '{printf "%s", $1}')
 metadata="../metadata.json"
 src_path="../"
 dst_path="../build/${plugin_path}"
