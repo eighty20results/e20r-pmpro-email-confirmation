@@ -23,52 +23,77 @@ namespace E20R\PMPro\Addon\Email_Confirmation;
 
 
 use E20R\PMPro\Addon\Email_Confirmation_Shortcode;
+use E20R\Utilities\Utilities;
 
 class HTML_Generator {
 	
 	/**
 	 * Generate "resend email with confirmation link" email form/content
 	 *
-	 * @param array $attributes
+	 * @param array    $attributes
+	 * @param \WP_User $wp_user
 	 *
 	 * @return null|string
 	 */
-	public static function createResendForm( $attributes ) {
+	public static function createResendForm( $attributes, $wp_user = null ) {
+		
+		$utils = Utilities::get_instance();
 		
 		if ( empty( $attributes ) ) {
+			$utils->log( "No settings for form!" );
+			
 			return null;
 		}
 		
-		$wp_user = get_current_user();
+		if ( empty( $wp_user ) ) {
+			global $current_user;
+			$wp_user = $current_user;
+		}
+		
 		$html    = array();
 		$use_sms = (bool) $attributes['allow_sms'];
 		
 		$html[] = sprintf( '<div class="e20r-email-confirmation-form">' );
+		$html[] = sprintf( '<div class="e20r-warnings e20r-start-hidden">' );
+		$html[] = sprintf( '<p class="e20r-warning-message"></p>' );
+		$html[] = sprintf( '</div>' );
 		$html[] = self::maybeAddLoginWarning( $attributes['not_logged_in_msg'] );
-		$html[] = sprintf( '<h2 class="">%1$s</h2>', esc_html_e( $attributes['header'] ) );
+		$html[] = sprintf( '<h2 class="">%1$s</h2>', esc_html( $attributes['header'] ) );
 		$html[] = sprintf( '<form action="" id="e20r-email-confirmation-form" enctype="multipart/form-data">' );
 		$html[] = wp_nonce_field( 'e20r_send_confirmation', 'e20r_email_conf', true, false );
 		
-		if ( true === $use_sms ) {
-			$html[] = sprintf( '<input type="radio" id="e20r-use-sms" name="" value="1">' );
-			$html[] = sprintf( '<label for="e20r-use-sms">%1$s</label>',
-				__( 'Send Text Message', Email_Confirmation_Shortcode::plugin_slug )
-			);
-		}
-		
 		$html[] = sprintf( '<div class="e20r-email-input">' );
-		$html[] = sprintf( '<input type="hidden" name="e20r-user-id" value="%1$d">', $wp_user->ID );
-		$html[] = sprintf( '<input type="email" name="e20r-recipient-email" value="%1$s">', $wp_user->user_email );
+		$html[] = sprintf( '<input type="hidden" name="e20r-user-id" value="%1$d" />', $wp_user->ID );
+		$html[] = sprintf(
+			'<input type="hidden" id="e20r-redirect-slug" value="%1$s" />',
+			( empty( $attributes['confirmation_page_slug'] ) ? '' : urlencode( $attributes['confirmation_page_slug'] ) )
+		);
+		$html[] = sprintf(
+			'<input type="hidden" id="e20r-confirmation-msg" value="%1$s" />',
+			( empty( $attributes['confirmation_msg'] ) ? '' : $attributes['confirmation_msg'] )
+		);
+		// $html[] = sprintf( '<label for="e20r-recipient-email">%1$s</label>', __( 'Email address:', Email_Confirmation_Shortcode::plugin_slug ) );
+		$html[] = sprintf(
+			'<input type="email" class="e20r-recipient-email" name="e20r-recipient-email" placeholder="%2$s" id="e20r-recipient-email" value="%1$s" />',
+			$wp_user->user_email,
+			__( 'Email address:', Email_Confirmation_Shortcode::plugin_slug )
+		);
 		$html[] = sprintf( '</div>' );
 		
 		if ( true === $use_sms ) {
-		
-			$html[] = sprintf( '<div class="e20r-sms-input">' );
+			$html[] = sprintf( '<div class="e20r-sms-prompt">' );
+			$html[] = sprintf(
+				'<label for="e20r-sms-checkbox" class="e20r-use-sms">%1$s</label>',
+				__( 'Send as text message (cellphone)?', Email_Confirmation_Shortcode::plugin_slug )
+			);
+			$html[] = sprintf( '<input type="checkbox" id="e20r-sms-checkbox" value="1" class="e20r-use-sms" />' );
+			$html[] = sprintf( '</div>' );
+			$html[] = sprintf( '<div class="e20r-sms-input e20r-start-hidden">' );
 			$html[] = self::addSMSFields();
 			$html[] = sprintf( '</div>' );
 		}
 		
-		$html[] = sprintf( '<input type="submit" value="%1$s" />', esc_html_e( $attributes['button_text'] ) );
+		$html[] = sprintf( '<input type="submit" class="e20r-email-submit" value="%1$s" />', esc_html( $attributes['button_text'] ) );
 		$html[] = sprintf( '</form>' );
 		$html[] = sprintf( '</div>' );
 		
@@ -110,7 +135,7 @@ class HTML_Generator {
 		$html[] = sprintf( '<div class="e20r-ecs-not-logged-in">' );
 		$html[] = sprintf( '<p class="e20r-ecs-not-logged-in-text">%1$s</p>', $msg );
 		$html[] = sprintf(
-			'<a class="e20r-ecs-login-link" href="%1$s">$2$s</a>',
+			'<a class="e20r-ecs-login-link" href="%1$s">%2$s</a>',
 			wp_login_url( $current_page_url ),
 			__( "Log in and return", Email_Confirmation_Shortcode::plugin_slug )
 		);
@@ -128,7 +153,17 @@ class HTML_Generator {
 	private static function addSMSFields() {
 		$html = null;
 		
-		// TODO: Determine which fields we need to send an SMS and implement them here
-		echo empty( $html ) ? null : implode( "\n", $html );
+		/*
+		$html[] = sprintf(
+			'<label for="e20r-recipient-phone" class="e20r-recipient-phone">%1$s</label>',
+			__( 'Phone number:', Email_Confirmation_Shortcode::plugin_slug )
+		);
+		*/
+		$html[] = sprintf(
+			'<input type="text" name="e20r-recipient-phone" placeholder="%1$s" id="e20r-recipient-phone" class="e20r-recipient-phone" value="" />',
+			__( 'a phone number', Email_Confirmation_Shortcode::plugin_slug )
+		);
+		
+		return empty( $html ) ? null : implode( "\n", $html );
 	}
 }
