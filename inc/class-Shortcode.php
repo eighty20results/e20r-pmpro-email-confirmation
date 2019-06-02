@@ -125,9 +125,13 @@ class Shortcode {
 	private function processAttributes( $attributes ) {
 		
 		$attrs = shortcode_atts( array(
-			'header'                 => __( 'Please (re)send the validation email for my user', Email_Confirmation_Shortcode::plugin_slug ),
-			'button_text'            => __( 'Re-send validation link', Email_Confirmation_Shortcode::plugin_slug ),
-			'confirmation_msg'       => __( 'If you do not receive the email message, please search through your Junk Mail/Spam folder(s)', Email_Confirmation_Shortcode::plugin_slug ),
+			'header'                 => __( 'Send my membership validation email to', Email_Confirmation_Shortcode::plugin_slug ),
+			'button_text'            => __( 'Please send', Email_Confirmation_Shortcode::plugin_slug ),
+			'confirmation_msg'       => sprintf(
+				__(
+					'Confirmation link sent...',
+					Email_Confirmation_Shortcode::plugin_slug )
+			),
 			'allow_sms'              => false,
 			'not_logged_in_msg'      => __( 'Please log in to the system', Email_Confirmation_Shortcode::plugin_slug ),
 			'confirmation_page_slug' => null,
