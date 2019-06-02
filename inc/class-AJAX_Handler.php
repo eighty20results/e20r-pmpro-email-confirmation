@@ -35,9 +35,6 @@ class AJAX_Handler {
 	private function __construct() {
 	}
 	
-	private function __clone() {
-	}
-	
 	/**
 	 * Get or instantiate and return the class (singleton)
 	 *
@@ -59,10 +56,13 @@ class AJAX_Handler {
 	 */
 	public function sendConfirmation() {
 		
-		if ( false === wp_verify_nonce( 'e20r_email_conf', 'e20r_send_confirmation' ) ) {
+		$utils = Utilities::get_instance();
+		
+		if ( false === check_ajax_referer( 'e20r_send_confirmation', 'e20r_email_conf', false ) ) {
+			$utils->log( "Unable to verify nonce!" );
 			wp_send_json_error(
 				__(
-					'Error: Invalid NONCE for request',
+					'Error: Insecure request!',
 					Email_Confirmation_Shortcode::plugin_slug
 				)
 			);
@@ -72,12 +72,14 @@ class AJAX_Handler {
 		// Force user to log in (redirect to login page w/redirect_to configured)
 		if ( ! is_user_logged_in() ) {
 			
-			wp_send_json_error( 10000 );
+			$utils->log( "Invalid user!" );
+			wp_send_json_error( __( 'Invalid user', Email_Confirmation_Shortcode::plugin_slug ) );
 			exit();
 		}
 		
 		if ( ! function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
 			
+			$utils->log( "Error: The Paid Memberships Pro plugin is not active!" );
 			wp_send_json_error(
 				__( 'Error: The Paid Memberships Pro plugin is not active!', Email_Confirmation_Shortcode::plugin_slug )
 			);
@@ -86,9 +88,10 @@ class AJAX_Handler {
 		
 		if ( ! function_exists( 'pmproec_resend_confirmation_email' ) ) {
 			
+			$utils->log( "Error: The PMPro Email Confirmation add-on is not active!" );
 			wp_send_json_error(
 				__(
-					'Error: The PMPro Email Confirmation plugin is not active!',
+					'Error: The PMPro Email Confirmation add-on is not active!',
 					Email_Confirmation_Shortcode::plugin_slug
 				)
 			);
@@ -96,9 +99,8 @@ class AJAX_Handler {
 		}
 		
 		
-		// TODO: Handle sending confirmation email and return success/failure message
-		$utils           = Utilities::get_instance();
-		$user_email      = $utils->get_variable( 'e20r_email_address', '' );
+		// Handle sending confirmation email and return success/failure message
+		$user_email      = $utils->get_variable( 'e20r_email_address', null );
 		$user_sms_number = $utils->get_variable( 'e20r_phone_number', null );
 		$user            = get_user_by( 'email', $user_email );
 		$primary_level   = pmpro_getMembershipLevelForUser( $user->ID, true );
@@ -114,6 +116,7 @@ class AJAX_Handler {
 		
 		// Doesn't exist. Return error
 		if ( empty( $user ) ) {
+			$utils->log( "Error: Invalid values supplied!" );
 			wp_send_json_error(
 				__( 'Error: Invalid values supplied!', Email_Confirmation_Shortcode::plugin_slug )
 			);
@@ -128,6 +131,13 @@ class AJAX_Handler {
 			$has_confirmation_level = $has_confirmation_level || pmproec_isEmailConfirmationLevel( $level->id );
 		}
 		
+		if ( ! isset( $primary_level->id ) ) {
+			wp_send_json_error(
+				__( 'Error: Not an active member!', Email_Confirmation_Shortcode::plugin_slug )
+			);
+			exit();
+		}
+		
 		// Quietly return success if the user's level isn't a confirmation level
 		if ( false === pmproec_isEmailConfirmationLevel( $primary_level->id ) && false === $has_confirmation_level ) {
 			wp_send_json_success();
@@ -136,11 +146,13 @@ class AJAX_Handler {
 		
 		// Send the user an SMS with the confirmation link info
 		if ( true === $send_sms ) {
+			$utils->log("Trigger SMS message with confirmation link");
 			$sms_success = $this->sendSMSTo( $user, $user_sms_number );
 		}
 		
 		// Something failed when sending the SMS message (text message)
 		if ( true === $send_sms && false === $sms_success ) {
+			$utils->log( "Error while sending SMS!" );
 			wp_send_json_error(
 				sprintf(
 					__( 'Error while sending SMS to %s', Email_Confirmation_Shortcode::plugin_slug ),
@@ -156,6 +168,8 @@ class AJAX_Handler {
 			// Allow us to log errors/failures during email transmission
 			add_action( 'wp_mail_failed', array( $this, 'onEmailError' ) );
 			
+			$utils->log("Sending confirmation email for {$user->ID}/{$user_email}");
+			
 			// Send the confirmation email for this user/level
 			pmproec_resend_confirmation_email( $user->ID );
 		}
@@ -165,6 +179,14 @@ class AJAX_Handler {
 		exit();
 	}
 	
+	/**
+	 * SMS (text message) integration for this plugin
+	 *
+	 * @param \WP_User $user
+	 * @param string   $number
+	 *
+	 * @return bool
+	 */
 	public function sendSMSTo( $user, $number ) {
 		
 		// TODO: Implement SMS handler for this plugin
@@ -194,5 +216,11 @@ class AJAX_Handler {
 		);
 		
 		return;
+	}
+	
+	/**
+	 * Hidden clone method
+	 */
+	private function __clone() {
 	}
 }
