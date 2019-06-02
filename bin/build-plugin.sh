@@ -8,7 +8,7 @@ exclude=(*.yml *.phar composer.* vendor)
 sed=/usr/bin/sed
 build=(plugin-updates/vendor/*.php)
 plugin_path="${short_name}"
-version=$(egrep "^Version:" ../class.${short_name}.php | sed 's/[[:alpha:]|(|[:space:]|\:]//g' | awk -F- '{printf "%s", $1}')
+version=$(egrep "^Version:" ../class-${short_name}.php | sed 's/[[:alpha:]|(|[:space:]|\:]//g' | awk -F- '{printf "%s", $1}')
 metadata="../metadata.json"
 src_path="../"
 dst_path="../build/${plugin_path}"
@@ -58,10 +58,10 @@ zip -r ${kit_name}.zip ${plugin_path}
 cd ${debug_path}/..
 zip -r ${debug_name}.zip ${plugin_path}-debug
 cd ${dst_path}/..
-ssh ${server} "cd ./www/protected-content/ ; mkdir -p \"${short_name}\""
-scp ${kit_name}.zip ${server}:./www/protected-content/${short_name}/
-scp ${kit_name}-debug.zip ${server}:./www/protected-content/${short_name}/
-scp ${metadata} ${server}:./www/protected-content/${short_name}/
-ssh ${server} "cd ./www/protected-content/ ; ln -sf \"${short_name}\"/\"${short_name}\"-\"${version}\".zip \"${short_name}\".zip"
+ssh ${server} "cd ./${server}/protected-content/ ; mkdir -p \"${short_name}\""
+scp ${kit_name}.zip ${server}:./${server}/protected-content/${short_name}/
+scp ${kit_name}-debug.zip ${server}:./${server}/protected-content/${short_name}/
+scp ${metadata} ${server}:./${server}/protected-content/${short_name}/
+ssh ${server} "cd ./${server}/protected-content/ ; ln -sf \"${short_name}\"/\"${short_name}\"-\"${version}\".zip \"${short_name}\".zip"
 rm -rf ${dst_path}
 rm -rf ${debug_path}

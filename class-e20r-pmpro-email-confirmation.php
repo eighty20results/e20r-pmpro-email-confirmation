@@ -30,6 +30,7 @@ namespace E20R\PMPro\Addon;
 
 use E20R\PMPro\Addon\Email_Confirmation\AJAX_Handler;
 use E20R\PMPro\Addon\Email_Confirmation\Shortcode;
+use E20R\Utilities\Utilities;
 
 /**
  * Class Email_Confirmation_Shortcode
@@ -195,7 +196,26 @@ class Email_Confirmation_Shortcode {
 	 */
 	public function checkDependencies() {
 		
-		// TODO: Add plugin check for the PMPro Email Validation plugin
+		$has_PMPro     = function_exists( 'pmpro_getAllLevels' );
+		$has_EmailConf = function_exists( 'pmproec_pmpro_membership_level_after_other_settings' );
+		$utils         = Utilities::get_instance();
+		
+		if ( is_admin() ) {
+			
+			if ( false === $has_PMPro ) {
+				$utils->add_message( sprintf(
+					__( "Error: The <a href=\"%s\" target=\"_blank\">Paid Memberships Pro</a> plugin must be installed and active!", Email_Confirmation_Shortcode::plugin_slug ),
+					'https://wordpress.org/plugins/paid-memberships-pro/'
+				), 'error', 'backend' );
+			}
+			
+			if ( false === $has_EmailConf ) {
+				$utils->add_message( sprintf(
+					__( "Error: The <a href=\"%s\" target=\"_blank\">Email Confirmation</a> add-on for PMPro must be installed and active!", Email_Confirmation_Shortcode::plugin_slug ),
+					'https://www.paidmembershipspro.com/add-ons/email-confirmation-add-on/'
+				), 'error', 'backend' );
+			}
+		}
 	}
 	
 	/**
