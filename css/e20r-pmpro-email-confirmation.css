@@ -1,0 +1,40 @@
+/*
+ *  Copyright (c) 2019. - Eighty / 20 Results by Wicked Strong Chicks.
+ *  ALL RIGHTS RESERVED
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  You can contact us at mailto:info@eighty20results.com
+ */
+
+/*
+label.e20r-use-sms { float: left; }
+input.e20r-use-sms { float: right; }
+ */
+input.e20r-email-submit { margin-top: 10px; }
+div.e20r-sms-prompt { margin: 5px; }
+div.e20r-sms-prompt label,
+div.e20r-sms-prompt input { display: inline-block; vertical-align: middle; }
+div.e20r-sms-prompt input { float: right; }
+div.e20r-start-hidden { display: none; }
+p.e20r-error-msg {
+	background-color: orange;
+	padding: 10px;
+	color: white;
+}
+p.e20r-success-msg {
+	background-color: green;
+	padding: 10px;
+	color: white;
+}
