@@ -135,7 +135,6 @@ class Shortcode {
 			'allow_sms'              => false,
 			'not_logged_in_msg'      => __( 'Please log in to the system', Email_Confirmation_Shortcode::plugin_slug ),
 			'confirmation_page_slug' => null,
-			'full_form'              => 'yes',
 		), $attributes );
 		
 		// Process the class variables and configure them based on the Shortcode attributes (if applicable)
