@@ -63,8 +63,6 @@ fabric.properties
 .idea/
 /build/
 /composer.phar
-/build_readme/readme_changelog.txt
-/build_readme/json_changelog.txt
 /composer.lock
 /lib/nesbot/
 /lib/lucatume/
@@ -111,3 +109,5 @@ fabric.properties
 /lib/autoload.php
 /lib/autoload_framework.php
 /inc/utilities
+/build_readmes/readme_changelog.txt
+/build_readmes/json_changelog.txt
