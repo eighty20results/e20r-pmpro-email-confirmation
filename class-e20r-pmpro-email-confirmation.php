@@ -81,7 +81,7 @@ class Email_Confirmation_Shortcode {
 	 * @access public static
 	 *
 	 */
-	public static function autoLoader( $class_name ) {
+	public function autoLoader( $class_name ) {
 		
 		$pattern       = preg_quote( 'e20r\\utilities' );
 		$has_utilities = ( 1 === preg_match( "/{$pattern}/i", $class_name ) );
@@ -148,8 +148,51 @@ class Email_Confirmation_Shortcode {
 		add_action( 'wp_ajax_nopriv_e20r_send_confirmation', array( AJAX_Handler::getInstance(), 'sendConfirmation' ) );
 		
 		add_action( 'admin_init', array( $this, 'checkDependencies' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'enqueue' ) );
 	}
 	
+	/**
+	 * Load the JS and CSS whenever the 'e20r_confirmation_form' or block is being loaded
+	 */
+	public function enqueue() {
+		
+		// Processing an ajax call
+		if ( defined( 'DOING_AJAX' ) && true === DOING_AJAX ) {
+			return;
+		}
+		
+		global $post;
+		
+		// No content in post
+		if ( empty( $post->post_content ) ) {
+			return;
+		}
+		
+		// Check whether the shortcode is present on this post
+		if ( false === has_shortcode( $post->post_content, 'e20r_confirmation_form' ) &&
+		     ( function_exists( 'has_block' ) && false === has_block( 'e20r-confirmation-form', $post ) )
+		) {
+			return;
+		}
+		
+		// Load CSS and JS files
+		wp_enqueue_style( 'e20r-pmpro-email-confirmation', plugins_url( 'css/e20r-pmpro-email-confirmation.css', __FILE__ ), null, '1.0' );
+		
+		wp_register_script( 'e20r-pmpro-email-confirmation', plugins_url( 'js/e20r-pmpro-email-confirmation.js', __FILE__ ), array( 'jquery' ), '1.0' );
+		
+		wp_localize_script( 'e20r-pmpro-email-confirmation', 'e20r_pec', array(
+				'timeout' => apply_filters( 'e20r-pec-ajax-timeout', 15 ),
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+			)
+		);
+		
+		wp_enqueue_script( 'e20r-pmpro-email-confirmation' );
+	}
+	
+	/**
+	 * Check that the required add-ons/plugins are present. Show warning message if not
+	 */
 	public function checkDependencies() {
 		
 		// TODO: Add plugin check for the PMPro Email Validation plugin
@@ -183,7 +226,7 @@ if ( ! class_exists( '\\Puc_v4_Factory' ) ) {
 }
 
 $plugin_updates = \Puc_v4_Factory::buildUpdateChecker(
-	sprintf( 'https://eighty20results.com/protected-content/%s/metadata.json',Email_Confirmation_Shortcode::plugin_slug ),
+	sprintf( 'https://eighty20results.com/protected-content/%s/metadata.json', Email_Confirmation_Shortcode::plugin_slug ),
 	__FILE__,
 	Email_Confirmation_Shortcode::plugin_slug
 );
