@@ -75,11 +75,18 @@ class Shortcode {
 	private $confirmation_page_slug = null;
 	
 	/**
-	 * Display the entire form (should we exclude SMS or not)
+	 * Display the entire form (should we exclude email and SMS input (or not))
 	 *
 	 * @var bool
 	 */
-	private $full_form = false;
+	private $show_full_form = true;
+	
+	/**
+	 * Page to send user to if they're logged in, but not a validated member
+	 *
+	 * @var string
+	 */
+	private $unvalidated_page_target = null;
 	
 	/**
 	 * Get or instantiate and return the class (singleton)
@@ -125,8 +132,8 @@ class Shortcode {
 	private function processAttributes( $attributes ) {
 		
 		$attrs = shortcode_atts( array(
-			'header'                 => __( 'Send my membership validation email to', Email_Confirmation_Shortcode::plugin_slug ),
-			'button_text'            => __( 'Please send', Email_Confirmation_Shortcode::plugin_slug ),
+			'header'                 => __( 'Send my membership validation email', Email_Confirmation_Shortcode::plugin_slug ),
+			'button_text'            => __( 'Send now', Email_Confirmation_Shortcode::plugin_slug ),
 			'confirmation_msg'       => sprintf(
 				__(
 					'Confirmation link sent...',
@@ -135,6 +142,8 @@ class Shortcode {
 			'allow_sms'              => false,
 			'not_logged_in_msg'      => __( 'Please log in to the system', Email_Confirmation_Shortcode::plugin_slug ),
 			'confirmation_page_slug' => null,
+			'unvalidated_page_target' => null,
+			'show_full_form'          => true,
 		), $attributes );
 		
 		// Process the class variables and configure them based on the Shortcode attributes (if applicable)
