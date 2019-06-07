@@ -52,6 +52,7 @@ class HTML_Generator {
 		
 		$html    = array();
 		$use_sms = (bool) $attributes['allow_sms'];
+		$hide_full = !(bool) $attributes['show_full_form'];
 		
 		$html[] = sprintf( '<div class="e20r-email-confirmation-form">' );
 		$html[] = sprintf( '<div class="e20r-warnings e20r-start-hidden">' );
@@ -62,7 +63,7 @@ class HTML_Generator {
 		$html[] = sprintf( '<form action="" id="e20r-email-confirmation-form" enctype="multipart/form-data">' );
 		$html[] = wp_nonce_field( 'e20r_send_confirmation', 'e20r_email_conf', true, false );
 		
-		$html[] = sprintf( '<div class="e20r-email-input">' );
+		$html[] = sprintf( '<div class="e20r-email-input %1$s">', ( $hide_full ? 'e20r-start-hidden' : null ) );
 		$html[] = sprintf( '<input type="hidden" name="e20r-user-id" value="%1$d" />', $wp_user->ID );
 		$html[] = sprintf(
 			'<input type="hidden" id="e20r-redirect-slug" value="%1$s" />',
@@ -81,7 +82,7 @@ class HTML_Generator {
 		$html[] = sprintf( '</div>' );
 		
 		if ( true === $use_sms ) {
-			$html[] = sprintf( '<div class="e20r-sms-prompt">' );
+			$html[] = sprintf( '<div class="e20r-sms-prompt %1$s">', ( $hide_full ? 'e20r-start-hidden' : null ) );
 			$html[] = sprintf(
 				'<label for="e20r-sms-checkbox" class="e20r-use-sms">%1$s</label>',
 				__( 'Send as text message (cellphone)?', Email_Confirmation_Shortcode::plugin_slug )
