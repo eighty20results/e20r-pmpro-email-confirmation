@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: E20R - Email Confirmation Shortcode plugin
-Plugin URI: http://eighty20results.com
-Description: A brief description of the Plugin.
-Version: 1.0
+Plugin URI: http://eighty20results.com/paid-memberships-pro/e20r-pmpro-email-confirmation
+Description: This plugin provides the [e20r_confirmation_form] short code. This short code generates a form to let members resend their PMPro Email Confirmation message. The message is sent, either to the specified email address or, to the user who is logged in when the "Submit"/"Send Now" button is clicked.
+Version: 1.1
 Author: Thomas at Eighty/20 Results by Wicked Strong Chicks, LLC <thomas@eighty20results.com>
 Author URI: https://eighty20results.com/thomas-sjolshagen/
 License: GPL2
