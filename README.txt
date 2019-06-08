@@ -31,6 +31,20 @@ This settings page will also ask you to select the target page of the redirect o
 
 == Changelog ==
 
+== 1.1 ==
+
+* ENHANCEMENT: Added support for settings page and redirect on login
+* ENHANCEMENT: Add support for the 'show_full_form' attribute to show/hide the input fields
+* ENHANCEMENT: Support redirect to a configured page when user isn't a validated member
+* ENHANCEMENT: Added and reverted support for bypass link in short code output
+* BUG FIX: Didn't include check for required plugin/add-on options
+* BUG FIX: Incorrect path to plugin files in build scripts
+* BUG FIX: Renamed full_form attribute to 'show_full_form'. Accepts 0 or 1 as values
+* BUG FIX: Didn't redirect to the specified page on login
+* BUG FIX: Clean up check of validation key
+* BUG FIX: Improved documentation of plugin in description
+* BUG FIX: Clean up the WordPress plugin header with description, etc
+
 == 1.0 ==
 
 * Initial release (v1.0)
