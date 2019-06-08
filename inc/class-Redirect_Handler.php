@@ -22,9 +22,15 @@
 namespace E20R\PMPro\Addon\Email_Confirmation;
 
 
+/**
+ * Class Redirect_Handler
+ * @package E20R\PMPro\Addon\Email_Confirmation
+ */
 class Redirect_Handler {
 	
 	/**
+	 * Instance of this class
+	 *
 	 * @var null|Redirect_Handler
 	 */
 	private static $instance = null;
@@ -49,38 +55,53 @@ class Redirect_Handler {
 	public function loadHooks() {
 		
 		add_filter( 'login_redirect', array( $this, 'maybeRedirect' ), 9999, 3 );
+		add_action( 'wp_login', array( $this, 'maybeRedirect' ), - 1, 2 );
 	}
 	
 	/**
-	 * Filter handler for the WP Redirect target
+	 * Handler for the WP Login action (wp_login)
 	 *
-	 * @param string   $redirect_to
-	 * @param string   $requested_redirect_to
+	 * @param string   $user_login
 	 * @param \WP_User $user
 	 *
 	 * @return string
 	 */
-	public function maybeRedirect( $redirect_to, $requested_redirect_to, $user ) {
+	public function maybeRedirect( $user_login, $user ) {
 		
-		$should_redirect = Settings::get( 'redirect_if_not_verified' );
+		$should_redirect = (bool) Settings::get( 'redirect_if_not_verified' );
 		
 		if ( false === $should_redirect ) {
-			return $redirect_to;
+			return;
+		}
+		
+		$tml_login = true;
+		
+		if ( function_exists( 'tml_is_action' ) ) {
+			$tml_login = tml_is_action( 'login' );
+		}
+		
+		if ( false === $tml_login ) {
+			return;
+		}
+		
+		if ( empty( $user ) && ! empty( $user_login ) ) {
+			$user = get_user_by( 'login', $user_login );
 		}
 		
 		if ( true === $this->isValidated( $user ) ) {
-			return $redirect_to;
+			return;
 		}
 		
-		$redirect_to_page_id = Settings::get( 'pec_redirect_target_page' );
+		$redirect_to_page_id = (int) Settings::get( 'pec_redirect_target_page' );
 		
-		if ( -1 === $redirect_to_page_id ) {
-			return $redirect_to;
+		if ( - 1 === $redirect_to_page_id || empty( $redirect_to_page_id ) ) {
+			return;
 		}
 		
 		$redirect_to = get_permalink( $redirect_to_page_id );
 		
-		return $redirect_to;
+		wp_safe_redirect( $redirect_to );
+		exit();
 	}
 	
 	/**
@@ -89,11 +110,17 @@ class Redirect_Handler {
 	 * @param \WP_User $user
 	 *
 	 * @return bool
+	 *
+	 * @access private
 	 */
 	private function isValidated( $user ) {
 		
 		if ( ! function_exists( 'pmpro_getMembershipLevelForUser' ) ||
 		     ! function_exists( 'pmproec_isEmailConfirmationLevel' ) ) {
+			return true;
+		}
+		
+		if ( empty( $user ) ) {
 			return true;
 		}
 		
@@ -110,9 +137,8 @@ class Redirect_Handler {
 			return true;
 		}
 		
-		
 		// Get the validation key for the user
-		$validation_key = get_user_meta( $user->ID, "pmpro_email_confirmation_key", true );
+		$validation_key = get_user_meta( $user->ID, 'pmpro_email_confirmation_key', true );
 		
 		if ( ! empty( $validation_key ) && "validated" == $validation_key ) {
 			return true;
