@@ -29,6 +29,8 @@ License: GPL2
 namespace E20R\PMPro\Addon;
 
 use E20R\PMPro\Addon\Email_Confirmation\AJAX_Handler;
+use E20R\PMPro\Addon\Email_Confirmation\Redirect_Handler;
+use E20R\PMPro\Addon\Email_Confirmation\Settings;
 use E20R\PMPro\Addon\Email_Confirmation\Shortcode;
 use E20R\Utilities\Utilities;
 
@@ -40,9 +42,25 @@ use E20R\Utilities\Utilities;
 class Email_Confirmation_Shortcode {
 	
 	/**
+	 * Plugin Version
+	 */
+	const VERSION = '1.1';
+	/**
 	 * WP slug for the plugin (used in translations)
 	 */
 	const plugin_slug = 'e20r-pmpro-email-confirmation';
+	/**
+	 * File system path to the plugin
+	 *
+	 * @var string
+	 */
+	public static $LIBRARY_URL = '';
+	/**
+	 * URL to the plugin
+	 *
+	 * @var string
+	 */
+	public static $LIBRARY_PATH = '';
 	
 	/**
 	 * Singleton instance of this class
@@ -67,7 +85,9 @@ class Email_Confirmation_Shortcode {
 	public static function getInstance() {
 		
 		if ( is_null( self::$instance ) ) {
-			self::$instance = new self();
+			self::$instance     = new self();
+			self::$LIBRARY_URL  = plugins_url( null, __FILE__ );
+			self::$LIBRARY_PATH = plugin_dir_path( __FILE__ );
 		}
 		
 		return self::$instance;
@@ -140,6 +160,9 @@ class Email_Confirmation_Shortcode {
 	 * Load all filter/action/shortcode handlers for the plugin
 	 */
 	public function loadHooks() {
+		
+		add_action( 'plugins_loaded', array( Settings::getInstance(), 'loadHooks' ), 11 );
+		add_action( 'plugins_loaded', array( Redirect_Handler::getInstance(), 'loadHooks'), 11 );
 		
 		// Shortcode handler for the plugin
 		add_shortcode( 'e20r_confirmation_form', array( Shortcode::getInstance(), 'loadShortcode' ) );
