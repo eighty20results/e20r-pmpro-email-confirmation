@@ -95,6 +95,13 @@ class HTML_Generator {
 		}
 		
 		$html[] = sprintf( '<input type="submit" class="e20r-email-submit" value="%1$s" />', esc_html( $attributes['button_text'] ) );
+		/*
+		$html[] = sprintf(
+			'<a href="%1$s">%2$s</a>',
+			esc_url_raw( $send_to ),
+			__('User profile', Email_Confirmation_Shortcode::plugin_slug )
+		);
+		*/
 		$html[] = sprintf( '</form>' );
 		$html[] = sprintf( '</div>' );
 		
