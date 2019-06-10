@@ -3,7 +3,7 @@
 #
 short_name="e20r-pmpro-email-confirmation"
 server="eighty20results.com"
-include=(css js inc lib/yahnis-elsts class-${short_name}.php readme.txt)
+include=(css js inc lib/yahnis-elsts/plugin-update-checker class-${short_name}.php readme.txt)
 exclude=(*.yml *.phar composer.* vendor)
 sed=/usr/bin/sed
 build=(plugin-updates/vendor/*.php)
@@ -23,6 +23,8 @@ mkdir -p ${kit_path}
 mkdir -p ${kit_path}-debug
 mkdir -p ${dst_path}
 mkdir -p ${debug_path}
+mkdir -p ${dst_path}/includes/plugin-update-checker
+mkdir -p ${debug_path}/includes/plugin-update-checker
 
 if [[ -f  ${kit_name} ]]
 then
@@ -34,8 +36,14 @@ then
 fi
 
 for p in ${include[@]}; do
-	cp -R ${src_path}${p} ${dst_path}
-	cp -R ${src_path}${p} ${debug_path}
+
+    if [[ 'lib/yahnis-elsts/plugin-update-checker' == ${p} ]]; then
+        cp -R ${src_path}${p} ${dst_path}/includes/
+        cp -R ${src_path}${p} ${debug_path}/includes/
+    else
+        cp -R ${src_path}${p} ${dst_path}
+        cp -R ${src_path}${p} ${debug_path}
+    fi
 done
 
 echo "Stripping Debug data from sources"
@@ -46,11 +54,10 @@ for e in ${exclude[@]}; do
     find ${debug_path} -type d -iname ${e} -exec rm -rf {} \;
 done
 
-mkdir -p ${dst_path}/plugin-updates/vendor/
-for b in ${build[@]}; do
-    cp ${src_path}${b} ${dst_path}/plugin-updates/vendor/
-    cp ${src_path}${b} ${debug_path}/plugin-updates/vendor/
-done
+#for b in ${build[@]}; do
+#    cp ${src_path}${b} ${dst_path}/plugin-updates/vendor/
+#    cp ${src_path}${b} ${debug_path}/plugin-updates/vendor/
+#done
 
 
 cd ${dst_path}/..

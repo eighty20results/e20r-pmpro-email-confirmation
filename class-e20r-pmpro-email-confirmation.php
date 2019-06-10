@@ -265,9 +265,8 @@ add_action( 'plugins_loaded', array( Email_Confirmation_Shortcode::getInstance()
  * One-click update handler & checker
  */
 if ( ! class_exists( '\\Puc_v4_Factory' ) ) {
-	require 'lib/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
+	require 'includes/plugin-update-checker/plugin-update-checker.php';
 }
-
 $plugin_updates = \Puc_v4_Factory::buildUpdateChecker(
 	sprintf( 'https://eighty20results.com/protected-content/%s/metadata.json', Email_Confirmation_Shortcode::plugin_slug ),
 	__FILE__,
