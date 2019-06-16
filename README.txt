@@ -3,7 +3,7 @@ Contributors: eighty20results
 Tags: eighty20results, pmpro, paid memberships pro, members, memberships, confirmation email, resend confirmation email, shortcode
 Requires at least: 4.9
 Tested up to: 5.2.1
-Stable tag: 1.1
+Stable tag: 1.2
 
 == Description ==
 
@@ -30,6 +30,12 @@ This settings page will also ask you to select the target page of the redirect o
 == Known/Possible Issues ==
 
 == Changelog ==
+
+== 1.2 ==
+
+* BUG FIX: Activation error on new server
+* BUG FIX: Catch attempts to self-redirect
+* BUG FIX: Better handling of plugin-update functionality
 
 == 1.1 ==
 
