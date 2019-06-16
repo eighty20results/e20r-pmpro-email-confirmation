@@ -12,6 +12,8 @@ services:
       - /Volumes/Development/www/clean.local/wp-content/plugins/pmpro-email-confirmation:/var/www/html/wp-content/plugins/pmpro-email-confirmation:ro
       - /Volumes/Development/www/clean.local/wp-content/plugins/paid-memberships-pro:/var/www/html/wp-content/plugins/paid-memberships-pro:ro
       - /Volumes/Development/www/clean.local/wp-content/plugins/e20r-pmpro-email-confirmation:/var/www/html/wp-content/plugins/e20r-pmpro-email-confirmation
+      - /Volumes/Development/www/clean.local/wp-content/plugins/theme-my-login:/var/www/html/wp-content/plugins/theme-my-login:ro
+      - /Volumes/Development/www/clean.local/wp-content/plugins/tml-profile:/var/www/html/wp-content/plugins/tml-profile:ro
     ports:
     - target: 80 # Web server
       published: 80
@@ -50,6 +52,8 @@ services:
     - /Volumes/Development/www/clean.local/wp-content/plugins/pmpro-email-confirmation:/var/www/html/wp-content/plugins/pmpro-email-confirmation:ro
     - /Volumes/Development/www/clean.local/wp-content/plugins/paid-memberships-pro:/var/www/html/wp-content/plugins/paid-memberships-pro:ro
     - /Volumes/Development/www/clean.local/wp-content/plugins/e20r-pmpro-email-confirmation:/var/www/html/wp-content/plugins/e20r-pmpro-email-confirmation:ro
+    - /Volumes/Development/www/clean.local/wp-content/plugins/theme-my-login:/var/www/html/wp-content/plugins/theme-my-login:ro
+    - /Volumes/Development/www/clean.local/wp-content/plugins/tml-profiles:/var/www/html/wp-content/plugins/tml-profiles:ro
     labels:
     - "traefik.enable=true"
     - "traefik.frontend.rule=Host:development.local"

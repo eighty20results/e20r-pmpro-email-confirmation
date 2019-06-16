@@ -1,3 +1,1 @@
-BUG FIX: Activation error on new server
-BUG FIX: Catch attempts to self-redirect
-BUG FIX: Better handling of plugin-update functionality
+ENHANCEMENT: Added cursor status update during AJAX call(s)
