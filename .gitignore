@@ -111,3 +111,4 @@ fabric.properties
 /inc/utilities
 /build_readmes/readme_changelog.txt
 /build_readmes/json_changelog.txt
+/docker-env/e20r-pmpro-email-confirmation.sql
