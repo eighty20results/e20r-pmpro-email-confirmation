@@ -52,6 +52,9 @@
 
 			let self = this;
 			window.console.log("Trigger submit action!");
+
+			$('html,body').css('cursor', 'progress');
+
 			let request_data = {
 				action: 'e20r_send_confirmation',
 				'e20r_email_conf': self.confirmationForm.find('input#e20r_email_conf').val(),
@@ -87,6 +90,8 @@
 						msg.html($success_msg);
 						warnings.show();
 					}
+
+					$('html,body').css('cursor', 'default');
 				},
 				error: function ($response) {
 					window.console.log("Error: ", $response);
@@ -98,8 +103,8 @@
 					msg.addClass('e20r-error-msg');
 
 					warnings.show();
-
-				}
+					$('html,body').css('cursor', 'default');
+				},
 			});
 		}
 	}
