@@ -7,7 +7,8 @@ Version: 1.1
 Author: Thomas at Eighty/20 Results by Wicked Strong Chicks, LLC <thomas@eighty20results.com>
 Author URI: https://eighty20results.com/thomas-sjolshagen/
 License: GPL2
-	*  Copyright (c) 2019. - Eighty / 20 Results by Wicked Strong Chicks.
+ *
+ *  Copyright (c) 2019. - Eighty / 20 Results by Wicked Strong Chicks.
  *  ALL RIGHTS RESERVED
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -162,7 +163,7 @@ class Email_Confirmation_Shortcode {
 	public function loadHooks() {
 		
 		add_action( 'plugins_loaded', array( Settings::getInstance(), 'loadHooks' ), 11 );
-		add_action( 'plugins_loaded', array( Redirect_Handler::getInstance(), 'loadHooks'), 11 );
+		add_action( 'plugins_loaded', array( Redirect_Handler::getInstance(), 'loadHooks' ), 11 );
 		
 		// Shortcode handler for the plugin
 		add_shortcode( 'e20r_confirmation_form', array( Shortcode::getInstance(), 'loadShortcode' ) );
@@ -265,8 +266,17 @@ add_action( 'plugins_loaded', array( Email_Confirmation_Shortcode::getInstance()
  * One-click update handler & checker
  */
 if ( ! class_exists( '\\Puc_v4_Factory' ) ) {
-	require 'includes/plugin-update-checker/plugin-update-checker.php';
+	
+	$local_path  = plugin_dir_path( __FILE__ ) . 'lib/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
+	$plugin_path = plugin_dir_path( __FILE__ ) . 'includes/plugin-update-checker/plugin-update-checker.php';
+	
+	if ( file_exists( $plugin_path ) ) {
+		require $plugin_path;
+	} else if ( file_exists( $local_path ) ) {
+		require $local_path;
+	}
 }
+
 $plugin_updates = \Puc_v4_Factory::buildUpdateChecker(
 	sprintf( 'https://eighty20results.com/protected-content/%s/metadata.json', Email_Confirmation_Shortcode::plugin_slug ),
 	__FILE__,

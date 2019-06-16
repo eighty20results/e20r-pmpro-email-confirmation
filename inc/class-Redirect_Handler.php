@@ -22,6 +22,8 @@
 namespace E20R\PMPro\Addon\Email_Confirmation;
 
 
+use E20R\Utilities\Utilities;
+
 /**
  * Class Redirect_Handler
  * @package E20R\PMPro\Addon\Email_Confirmation
@@ -68,19 +70,24 @@ class Redirect_Handler {
 	 */
 	public function maybeRedirect( $user_login, $user ) {
 		
+		global $post;
 		$should_redirect = (bool) Settings::get( 'redirect_if_not_verified' );
+		$utils = Utilities::get_instance();
 		
 		if ( false === $should_redirect ) {
+			$utils->log("Redirect not configured");
 			return;
 		}
 		
 		$tml_login = true;
 		
 		if ( function_exists( 'tml_is_action' ) ) {
+			$utils->log("TML is active");
 			$tml_login = tml_is_action( 'login' );
 		}
 		
 		if ( false === $tml_login ) {
+			$utils->log("TML: Not processing login action");
 			return;
 		}
 		
@@ -89,12 +96,19 @@ class Redirect_Handler {
 		}
 		
 		if ( true === $this->isValidated( $user ) ) {
+			$utils->log("User is validated already...");
 			return;
 		}
 		
 		$redirect_to_page_id = (int) Settings::get( 'pec_redirect_target_page' );
 		
 		if ( - 1 === $redirect_to_page_id || empty( $redirect_to_page_id ) ) {
+			$utils->log("No target to redirect to");
+			return;
+		}
+		
+		if ( isset( $post->ID ) && $redirect_to_page_id == $post->ID ) {
+			$utils->log("Trying to redirect to self...");
 			return;
 		}
 		
