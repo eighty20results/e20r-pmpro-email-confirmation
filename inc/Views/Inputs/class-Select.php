@@ -44,12 +44,12 @@ class Select {
 		$utils->log( "Loading Select2 Libraries & sources" );
 		
 		wp_enqueue_script( 'select2',
-			Email_Confirmation_Shortcode::$LIBRARY_URL . "/lib/select2/dist/js/select2.js",
+			Email_Confirmation_Shortcode::$LIBRARY_URL . "/lib/select2/select2/dist/js/select2.js",
 			array( 'jquery' ),
 			Email_Confirmation_Shortcode::VERSION
 		);
 		wp_enqueue_style( 'select2',
-			Email_Confirmation_Shortcode::$LIBRARY_URL . "/lib/select2/dist/css/select2.css",
+			Email_Confirmation_Shortcode::$LIBRARY_URL . "/lib/select2/select2/dist/css/select2.css",
 			null,
 			Email_Confirmation_Shortcode::VERSION
 		);
