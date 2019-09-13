@@ -24,6 +24,7 @@ namespace E20R\PMPro\Addon\Email_Confirmation;
 use E20R\PMPro\Addon\Email_Confirmation_Shortcode;
 use E20R\PMPro\Addon\Email_Confirmation\Inputs\Input_Setting;
 use E20R\PMPro\Addon\Email_Confirmation\Models\Settings\Options;
+use E20R\Utilities\Licensing\Licensing;
 use E20R\Utilities\Utilities;
 
 class Settings {
@@ -167,12 +168,17 @@ class Settings {
 	 */
 	public function loadHooks() {
 		
+		$utils = Utilities::get_instance();
+		$utils->log("Loading admin_* hooks");
 		add_action( 'admin_init', array( $this, 'register' ), 10 );
 		add_action( 'admin_menu', array( $this, 'addToAdminMenu' ), 10 );
 		
 		add_action( 'admin_enqueue_scripts', array( $this, 'loadInputJS' ) );
-		add_filter( 'e20r-settings-option-name', array( $this, 'setOptionName' ), 10, 2 );
 		
+		$utils->log("Loading settings-options filter hooks");
+		add_filter( 'e20r-settings-option-name', array( $this, 'getOptionName' ), 10, 2 );
+		
+		$utils->log("Loading View specific JS path filter");
 		add_filter( 'e20r-settings-enqueue-js-path', 'E20R\PMPro\Addon\Email_Confirmation\Views\Inputs\Select::jsPath', 10, 1 );
 		
 	}
@@ -217,7 +223,12 @@ class Settings {
 		$level_list  = array();
 		
 		$current_options = get_option( $option_name, array() );
+		$utils->log("Register settings for plugin (from option name: {$option_name}");
 		
+		if ( empty( $option_name ) ) {
+			$utils->log("No option name specified!");
+			return false;
+		}
 		add_settings_section(
 			'e20r-pec-settings',
 			__( 'E20R PMPro Email Confirmation Settings', Email_Confirmation_Shortcode::plugin_slug ),
@@ -263,6 +274,9 @@ class Settings {
 			$redirect_target->getSettings()
 		);
 		
+		$utils->log("Add settings for Licensing page");
+		Licensing::register_settings();
+		
 		// Configure settings & how to sanitize the input from the user
 		register_setting(
 			'e20r_pec_group',
@@ -276,6 +290,9 @@ class Settings {
 	 */
 	public function addToAdminMenu() {
 		
+		$utils = Utilities::get_instance();
+		$utils->log("Add email confirmation settings to admin page");
+		
 		add_menu_page(
 			__( 'PMPro Email Confirmation', Email_Confirmation_Shortcode::plugin_slug ),
 			__( 'PMP Email Conf', Email_Confirmation_Shortcode::plugin_slug ),
@@ -284,6 +301,9 @@ class Settings {
 			array( Views\Settings::getInstance(), 'addOptionsPage' ),
 			null
 		);
+		
+		$utils->log("Add E20R License settings");
+		Licensing::add_options_page();
 	}
 	
 	/**
@@ -298,8 +318,12 @@ class Settings {
 			'post_status' => array( 'publish', 'future' ),
 			'posts_per_page' => -1,
 			'order' => 'ASC',
+			'fields' => 'ids',
 			'order_by' => 'title',
 		);
+		
+		$utils = Utilities::get_instance();
+		$utils->log("Grab all published pages on the site");
 		
 		$page_query = new \WP_Query( $page_args );
 		$page_list = array();
@@ -307,8 +331,11 @@ class Settings {
 		/**
 		 * @var \WP_Post $page
 		 */
-		foreach( $page_query->get_posts() as $page ) {
-			$page_list[ $page->ID ] = $page->post_title;
+		$total_posts = $page_query->get_posts();
+		$utils->log("Processing " . count($total_posts) . " pages");
+		
+		foreach( $total_posts as $page_id ) {
+			$page_list[ $page_id ] = get_the_title( $page_id );
 		}
 		
 		return $page_list;
