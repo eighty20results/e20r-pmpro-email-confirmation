@@ -3,8 +3,9 @@ DEV_ENVIRONMENT=$(ipconfig getifaddr en0) ; export DEV_ENVIRONMENT
 PROJECT_NAME='e20r-pmpro-email-confirmation' ; export PROJECT_NAME
 PLUGIN_DIR=../docker-env
 PLUGIN_LIST="paid-memberships-pro pmpro-email-confirmation ${PROJECT_NAME}"
+#PLUGIN_LIST="paid-memberships-pro pmpro-email-confirmation"
 CURRENT_DIR=$(pwd)
-if [[ ${DEV_ENVIRONMENT} = "192.168.1.87" || ${DEV_ENVIRONMENT} == "192.168.1.50" ]];
+if [[ ${DEV_ENVIRONMENT} = "10.0.0.101" || ${DEV_ENVIRONMENT} == "10.0.0.175" ]];
 then
     echo "At home so using the docker env on docker.local"
     ssh docker.local "cd ./www/docker-images/docker4wordpress/ ; mkdir -p ./mariadb-init" # mkdir -p ./traefik
