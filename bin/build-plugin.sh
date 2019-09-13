@@ -3,7 +3,7 @@
 #
 short_name="e20r-pmpro-email-confirmation"
 server="eighty20results.com"
-include=(css js inc lib/yahnis-elsts/plugin-update-checker class-${short_name}.php readme.txt)
+include=(css js inc lib/yahnis-elsts/plugin-update-checker lib/10quality/license-keys-php-client lib/select2/select2 class-${short_name}.php README.txt)
 exclude=(*.yml *.phar composer.* vendor)
 sed=/usr/bin/sed
 build=(plugin-updates/vendor/*.php)
