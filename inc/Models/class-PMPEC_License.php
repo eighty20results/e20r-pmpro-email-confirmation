@@ -29,8 +29,16 @@ use E20R\Utilities\Utilities;
 
 class PMPEC_License extends License_Client {
 	
+	/**
+	 * The current (only) instance of this License_Client class
+	 *
+	 * @var null|PMPEC_License
+	 */
 	private static $instance = null;
 	
+	/**
+	 * PMPEC_License constructor.
+	 */
 	private function __construct() {
 	}
 	
@@ -60,7 +68,7 @@ class PMPEC_License extends License_Client {
 	}
 	
 	/**
-	 * Configure settings for the E20R MailChimp license (must match upstream license info)
+	 * Configure settings for the E20R Email Confirmation Reminder Shortcode for PMPro license (must match upstream license info)
 	 *
 	 * @param array $license_settings
 	 * @param array $plugin_settings
@@ -75,11 +83,12 @@ class PMPEC_License extends License_Client {
 			$plugin_settings = array();
 		}
 		
-		$utils->log("Load settings for the E20R Email Confirmation Page for PMPro");
+		$utils->log( "Load settings for the E20R Email Confirmation Reminder Shortcode for PMPro" );
 		$plugin_settings['e20r_pmpec'] = array(
-			'key_prefix' => 'e20r_pmpec',
-			'stub'       => 'e20r_pmpec',
-			'label'      => __( 'E20R Email Confirmation Page for PMPro', Email_Confirmation_Shortcode::plugin_slug ),
+			'key_prefix'  => 'e20r_pmpec',
+			'stub'        => 'e20r_pmpec',
+			'product_sku' => 'E20R_PMPEC',
+			'label'       => __( 'E20R Email Confirmation Reminder Shortcode for PMPro', Email_Confirmation_Shortcode::plugin_slug ),
 		);
 		
 		$license_settings = parent::add_new_license_info( $license_settings, $plugin_settings['e20r_pmpec'] );
@@ -97,15 +106,48 @@ class PMPEC_License extends License_Client {
 		switch ( Licensing::is_license_expiring( 'e20r_pmpec' ) ) {
 			
 			case true:
-				$utils->add_message( sprintf( __( 'The license for %s will renew soon. As this is an automatic payment, you will not have to do anything. To change %syour license%s, please go to %syour account page%s' ), 'E20R Email Confirmation License (with Support &amp; Updates)', '<a href="https://eighty20results.com/shop/licenses/" target="_blank">', '</a>', '<a href="https://eighty20results.com/account/" target="_blank">', '</a>' ), 'info', 'backend' );
+				$utils->add_message(
+					sprintf(
+						__(
+							'The license for \'%1$s\' will renew soon. As this is an automatic payment, you will not have to do anything. To change %2$syour license%3$s, please go to %4$syour account page%5$s',
+							Email_Confirmation_Shortcode::plugin_slug
+						),
+						__(
+							'E20R Email Confirmation Reminder Shortcode for PMPro (with Support &amp; Updates)',
+							Email_Confirmation_Shortcode::plugin_slug
+						),
+						'<a href="https://eighty20results.com/shop/licenses/" target="_blank">',
+						'</a>',
+						'<a href="https://eighty20results.com/account/" target="_blank">',
+						'</a>'
+					),
+					'info',
+					'backend'
+				);
 				break;
 			case - 1:
-				$utils->add_message( sprintf( __( 'Your %s license has expired. To continue to get updates and support for this plugin, you will need to %srenew and install your license%s.' ), 'Email Confirmation License', '<a href="https://eighty20results.com/shop/licenses/" target="_blank">', '</a>' ), 'error', 'backend' );
+				$utils->add_message(
+					sprintf(
+						__(
+							'Your \'%1$s\' license has expired. To continue to get updates and support for this plugin, you will need to %2$srenew and install your license%3$s.',
+							Email_Confirmation_Shortcode::plugin_slug
+						),
+						__(
+							'E20R Email Confirmation Reminder Shortcode for PMPro',
+							Email_Confirmation_Shortcode::plugin_slug
+						),
+						'<a href="https://eighty20results.com/shop/licenses/" target="_blank">', '</a>'
+					),
+					'error',
+					'backend'
+				);
 				break;
 		}
 	}
 	
+	/**
+	 * Deactivate the __clone() magic method since this is a singleton class
+	 */
 	private function __clone() {
-		// TODO: Implement __clone() method.
 	}
 }
