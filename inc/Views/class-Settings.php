@@ -20,6 +20,7 @@
 namespace E20R\PMPro\Addon\Email_Confirmation\Views;
 
 use E20R\PMPro\Addon\Email_Confirmation_Shortcode;
+use E20R\Utilities\Licensing\Licensing;
 use E20R\Utilities\Utilities;
 
 
@@ -73,23 +74,27 @@ class Settings {
 	 * Add the settings page framework
 	 */
 	public function addOptionsPage() {
-		$utils = Utilities::get_instance();
 		?>
         <div class="wrap">
             <div id="icon-options-general" class="icon32"></div>
             <h1><?php _e( 'Settings for PMPro Email Confirmation', Email_Confirmation_Shortcode::plugin_slug ); ?></h1>
+	        <?php
+	        if ( false === Licensing::is_licensed( 'e20r_pmpec' ) ) { ?>
+		        <p class="e20r-license-error">
+			        <?php printf(
+			        	__(
+			        	    'The E20R Email Confirmation Shortcode for PMPro license must be %1$sactivated first%2$s.',
+				            Email_Confirmation_Shortcode::plugin_slug
+			            ),
+				        sprintf( '<a href="%1$s">', Licensing::get_license_page_url( 'e20r_pmpec' ) ),
+				        '</a>'
+			        ); ?>
+		        </p>
+		        <?php
+		        return;
+	        } ?>
 			<?php settings_errors();
-			
-			$active_tab = $utils->get_variable( 'tab', 'committee' ); ?>
-            <!-- <h2 class="nav-tab-wrapper">
-                <a href="?page=oeis-settings&tab=committee"
-                   class="nav-tab <?php echo $active_tab == 'committee' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Committee Settings', Email_Confirmation_Shortcode::plugin_slug ); ?></a>
-                <a href="?page=oeis-settings&tab=application"
-                   class="nav-tab <?php echo $active_tab == 'application' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Application Settings', Email_Confirmation_Shortcode::plugin_slug ); ?></a>
-                <a href="?page=oeis-settings&tab=templates"
-                   class="nav-tab <?php echo $active_tab == 'templates' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Template Settings', Email_Confirmation_Shortcode::plugin_slug ); ?></a>
-            </h2>
-            -->
+			?>
             <form method="post" action="options.php">
 				<?php
 				
