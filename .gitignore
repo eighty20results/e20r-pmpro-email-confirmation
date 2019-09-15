@@ -68,6 +68,9 @@ fabric.properties
 /lib/lucatume/
 /lib/composer/
 /lib/nb/
+/lib/gettext/
+/lib/hoa/
+/lib/mck89/
 /lib/guzzlehttp/
 /lib/mikemclin/
 /lib/10up/
@@ -82,7 +85,6 @@ fabric.properties
 /lib/rmccue/
 /lib/hamcrest/
 /lib/wp-cli/
-/lib/yahnis-elsts/
 /lib/codeception/
 /lib/facebook/
 /lib/phpunit/
