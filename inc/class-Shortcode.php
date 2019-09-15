@@ -22,6 +22,7 @@
 namespace E20R\PMPro\Addon\Email_Confirmation;
 
 use E20R\PMPro\Addon\Email_Confirmation_Shortcode;
+use E20R\Utilities\Licensing\Licensing;
 
 class Shortcode {
 	
@@ -110,6 +111,10 @@ class Shortcode {
 	 * @return null|string
 	 */
 	public function loadShortcode( $attrs ) {
+		
+		if ( false === Licensing::is_licensed( 'e20r_pmpmc' ) ) {
+			return HTML_Generator::unlicensed();
+		}
 		
 		$attributes = $this->processAttributes( $attrs );
 		
