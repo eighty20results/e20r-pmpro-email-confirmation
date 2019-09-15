@@ -22,6 +22,7 @@
 namespace E20R\PMPro\Addon\Email_Confirmation;
 
 
+use E20R\Utilities\Licensing\Licensing;
 use E20R\Utilities\Utilities;
 
 /**
@@ -79,6 +80,11 @@ class Redirect_Handler {
 			return;
 		}
 		
+		if ( false === Licensing::is_licensed( 'e20r_pmpec' ) ) {
+			$utils->log("Redirect not allowed (inactive license)");
+			return;
+		}
+		
 		$tml_login = true;
 		
 		if ( function_exists( 'tml_is_action' ) ) {
@@ -100,7 +106,7 @@ class Redirect_Handler {
 			return;
 		}
 		
-		$redirect_to_page_id = (int) Settings::get( 'pec_redirect_target_page' );
+		$redirect_to_page_id = (int) Shortcode::get( 'pec_redirect_target_page' );
 		
 		if ( - 1 === $redirect_to_page_id || empty( $redirect_to_page_id ) ) {
 			$utils->log("No target to redirect to");
