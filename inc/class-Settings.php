@@ -24,7 +24,7 @@ namespace E20R\PMPro\Addon\Email_Confirmation;
 use E20R\PMPro\Addon\Email_Confirmation_Shortcode;
 use E20R\PMPro\Addon\Email_Confirmation\Inputs\Input_Setting;
 use E20R\PMPro\Addon\Email_Confirmation\Models\Settings\Options;
-use E20R\Utilities\Licensing\Licensing;
+use E20R\Utilities\Licensing\License_Settings;
 use E20R\Utilities\Utilities;
 
 class Settings {
@@ -73,12 +73,18 @@ class Settings {
 		$model = null;
 	}
 	
+	/**
+	 * Return array of plugin settings
+	 *
+	 * @return array
+	 */
 	private function getSettings() {
 		return $this->settings;
 	}
 	
 	/**
 	 * Get the model for this class
+	 *
 	 * @return null|Options
 	 */
 	private function getModel() {
@@ -275,7 +281,7 @@ class Settings {
 		);
 		
 		$utils->log("Add settings for Licensing page");
-		Licensing::register_settings();
+		License_Settings::register_settings();
 		
 		// Configure settings & how to sanitize the input from the user
 		register_setting(
@@ -303,7 +309,7 @@ class Settings {
 		);
 		
 		$utils->log("Add E20R License settings");
-		Licensing::add_options_page();
+		License_Settings::add_options_page();
 	}
 	
 	/**
