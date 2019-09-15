@@ -75,7 +75,7 @@ services:
   #      /bin/sh -c '
   #      sleep 10;
   #      wp core install --path="/var/www/html" --url="http://localhost:8000" --title="E20R MailChimp test" --admin_user=admin --admin_password=Gr1q2womit! --admin_email=thomas@eighty20results.com
-  #      '    
+  #      '
   #    volumes:
   #    - ./:/var/www/html
 
