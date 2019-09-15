@@ -50,9 +50,9 @@ class HTML_Generator {
 			$wp_user = $current_user;
 		}
 		
-		$html    = array();
-		$use_sms = (bool) $attributes['allow_sms'];
-		$hide_full = !(bool) $attributes['show_full_form'];
+		$html      = array();
+		$use_sms   = (bool) $attributes['allow_sms'];
+		$hide_full = ! (bool) $attributes['show_full_form'];
 		
 		$html[] = sprintf( '<div class="e20r-email-confirmation-form">' );
 		$html[] = sprintf( '<div class="e20r-warnings e20r-start-hidden">' );
@@ -173,5 +173,44 @@ class HTML_Generator {
 		);
 		
 		return empty( $html ) ? null : implode( "\n", $html );
+	}
+	
+	/**
+	 * Display message when License has expired/isn't activated
+	 *
+	 * @return string
+	 */
+	public static function unlicensed() {
+		
+		$utils = Utilities::get_instance();
+		$utils->add_message(
+			__(
+				"Email Confirmation shortcode is unavailable. Please activate/renew the license",
+				Email_Confirmation_Shortcode::plugin_slug
+			),
+			'error',
+			'backend'
+		);
+		
+		$html   = array();
+		$html[] = sprintf( '<div class="e20r-ecs-not-licensed">' );
+		$html[] = sprintf( '<p class="e20r-ecs-not-licensed-text">%1$s</p>',
+			sprintf(
+				__(
+					'This service is currently unavailable. Please %1$semail the webmaster%2$s!',
+					Email_Confirmation_Shortcode::plugin_slug
+				),
+				sprintf(
+					'<a href="mailto:%1$s?subject=Email%20confirmation%20page%20error">',
+					get_option( 'admin_email' )
+				),
+				'</a>'
+			)
+		);
+		
+		
+		$html[] = sprintf( '</div>' );
+		
+		return implode( "\n", $html );
 	}
 }
