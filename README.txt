@@ -1,9 +1,9 @@
 === E20R Shortcode for PMPro Email Confirmations ===
 Contributors: eighty20results
 Tags: eighty20results, pmpro, paid memberships pro, members, memberships, confirmation email, resend confirmation email, shortcode
-Requires at least: 4.9
-Tested up to: 5.2.1
-Stable tag: 1.3
+Requires at least: 5.0
+Tested up to: 5.3
+Stable tag: 2.0
 
 == Description ==
 
@@ -30,6 +30,24 @@ This settings page will also ask you to select the target page of the redirect o
 == Known/Possible Issues ==
 
 == Changelog ==
+
+== 2.0 ==
+
+* ENHANCEMENT: Add support for a Support and Updates license
+* ENHANCEMENT: Refactored for v3.0 of the E20R Licensing utilities module
+* ENHANCEMENT: Add HTML message when the Support and Updates license is inactive
+* ENHANCEMENT: Added missing code comments
+* ENHANCEMENT: Remove some of the composer installed dependencies for testing from GIT
+* ENHANCEMENT: Using composer to install select2 and new licensing client libraries
+* ENHANCEMENT: Updated the plugin description in the composer.json file
+* ENHANCEMENT: Updated Plugin name and description
+* ENHANCEMENT: Updated version number (v2.0)
+* BUG FIX: Incorrect handler function for 'e20r-settings-option-name' filter
+* BUG FIX: Error handler when no option name is specified
+* BUG FIX: Out-Of-Memory error when running on sites with 1000s of pages
+* BUG FIX: Error handling in JavaScript file for the redirect action(s)
+* BUG FIX: File clean-up
+* BUG FIX: Incorrect path to select2 libraries for settings page
 
 == 1.3 ==
 
