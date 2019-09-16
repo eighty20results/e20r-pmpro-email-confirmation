@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: E20R - Email Confirmation Shortcode plugin
+Plugin Name: E20R - Email Confirmation Reminder Shortcode for PMPro
 Plugin URI: http://eighty20results.com/paid-memberships-pro/e20r-pmpro-email-confirmation
-Description: This plugin provides the [e20r_confirmation_form] short code. This short code generates a form to let members resend their PMPro Email Confirmation message. The message is sent, either to the specified email address or, to the user who is logged in when the "Submit"/"Send Now" button is clicked.
-Version: 1.3
+Description: Add shortcode and redirect functionality to let the user self-service and re-send the PMPro email confirmation message when they log in and haven't yet confirmed their email address.
+Version: 2.0
 Author: Thomas at Eighty/20 Results by Wicked Strong Chicks, LLC <thomas@eighty20results.com>
 Author URI: https://eighty20results.com/thomas-sjolshagen/
 License: GPL2
@@ -30,9 +30,11 @@ License: GPL2
 namespace E20R\PMPro\Addon;
 
 use E20R\PMPro\Addon\Email_Confirmation\AJAX_Handler;
+use E20R\PMPro\Addon\Email_Confirmation\PMPEC_License;
 use E20R\PMPro\Addon\Email_Confirmation\Redirect_Handler;
 use E20R\PMPro\Addon\Email_Confirmation\Settings;
 use E20R\PMPro\Addon\Email_Confirmation\Shortcode;
+use E20R\Utilities\Licensing\Licensing;
 use E20R\Utilities\Utilities;
 
 /**
@@ -45,7 +47,7 @@ class Email_Confirmation_Shortcode {
 	/**
 	 * Plugin Version
 	 */
-	const VERSION = '1.3';
+	const VERSION = '2.0';
 	/**
 	 * WP slug for the plugin (used in translations)
 	 */
@@ -162,6 +164,8 @@ class Email_Confirmation_Shortcode {
 	 */
 	public function loadHooks() {
 		
+		add_action( 'plugins_loaded', array( Licensing::get_instance(), 'load_hooks' ), 11 );
+		add_action( 'plugins_loaded', array( PMPEC_License::getInstance(), 'load_hooks' ), 11 );
 		add_action( 'plugins_loaded', array( Settings::getInstance(), 'loadHooks' ), 11 );
 		add_action( 'plugins_loaded', array( Redirect_Handler::getInstance(), 'loadHooks' ), 11 );
 		
@@ -172,7 +176,10 @@ class Email_Confirmation_Shortcode {
 		add_action( 'wp_ajax_e20r_send_confirmation', array( AJAX_Handler::getInstance(), 'sendConfirmation' ) );
 		add_action( 'wp_ajax_nopriv_e20r_send_confirmation', array( AJAX_Handler::getInstance(), 'sendConfirmation' ) );
 		
+		// Check to make sure all required plugins are loaded
 		add_action( 'admin_init', array( $this, 'checkDependencies' ) );
+		
+		// Load our own post/page resources
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'enqueue' ) );
 	}
@@ -191,6 +198,10 @@ class Email_Confirmation_Shortcode {
 		
 		// No content in post
 		if ( empty( $post->post_content ) ) {
+			return;
+		}
+		
+		if ( false === Licensing::is_licensed( 'e20r_pmpmc' ) ) {
 			return;
 		}
 		
