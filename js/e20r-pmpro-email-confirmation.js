@@ -83,7 +83,7 @@
 					let redirect = $('#e20r-redirect-slug').val();
 					let $success_msg = $('#e20r-confirmation-msg').val();
 
-					if (typeof redirect !== 'undefined') {
+					if (typeof redirect !== 'undefined' && '' !== redirect) {
 						location.href = '/' + redirect + '/';
 					} else {
 						msg.addClass('e20r-success-msg');
