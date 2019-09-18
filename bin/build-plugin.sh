@@ -37,7 +37,7 @@ fi
 
 for p in ${include[@]}; do
 
-    if [[ 'lib/yahnis-elsts/plugin-update-checker' == ${p} ]]; then
+    if [[ 'lib/yahnis-elsts/plugin-update-checker' == ${p} || 'lib/select2/select2' == ${p} ]]; then
         cp -R ${src_path}${p} ${dst_path}/includes/
         cp -R ${src_path}${p} ${debug_path}/includes/
     else
