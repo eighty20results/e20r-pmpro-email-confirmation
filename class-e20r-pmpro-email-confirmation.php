@@ -37,6 +37,10 @@ use E20R\PMPro\Addon\Email_Confirmation\Shortcode;
 use E20R\Utilities\Licensing\Licensing;
 use E20R\Utilities\Utilities;
 
+if ( ! defined( 'E20R_LICENSE_SERVER_URL' ) ) {
+	define( 'E20R_LICENSE_SERVER_URL', 'https://eighty20results.com' );
+}
+
 /**
  * Class Email_Confirmation_Shortcode
  *
