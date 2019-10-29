@@ -1,15 +1,11 @@
-ENHANCEMENT: Add support for a Support and Updates license
-ENHANCEMENT: Refactored for v3.0 of the E20R Licensing utilities module
-ENHANCEMENT: Add HTML message when the Support and Updates license is inactive
-ENHANCEMENT: Added missing code comments
-ENHANCEMENT: Remove some of the composer installed dependencies for testing from GIT
-ENHANCEMENT: Using composer to install select2 and new licensing client libraries
-ENHANCEMENT: Updated the plugin description in the composer.json file
-ENHANCEMENT: Updated Plugin name and description
-ENHANCEMENT: Updated version number (v2.0)
-BUG FIX: Incorrect handler function for 'e20r-settings-option-name' filter
-BUG FIX: Error handler when no option name is specified
-BUG FIX: Out-Of-Memory error when running on sites with 1000s of pages
-BUG FIX: Error handling in JavaScript file for the redirect action(s)
-BUG FIX: File clean-up
-BUG FIX: Incorrect path to select2 libraries for settings page
+BUG FIX: Plugin build script misplaced the select2 library
+BUG FIX: Set the license server URL in the plugin
+BUG FIX: PHP Notice from License_Settings class
+BUG FIX: Doubly encoded HTML for mailto: link
+BUG FIX: Always getting 'unlicensed' when loading shortcode
+BUG FIX: Login redirect would exit when processing non-TML actions
+BUG FIX: Custom redirect handler for wp_login action
+BUG FIX: Custom redirect handler for login_redirect filter
+ENHANCEMENT: Don't worry about redirecting for AJAX operations
+ENHANCEMENT: Add max-width/width for email input field on form
+ENHANCEMENT: Add space to bottom of form
