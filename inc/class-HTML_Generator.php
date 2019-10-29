@@ -201,8 +201,11 @@ class HTML_Generator {
 					Email_Confirmation_Shortcode::plugin_slug
 				),
 				sprintf(
-					'<a href="mailto:%1$s?subject=Email%20confirmation%20page%20error">',
-					get_option( 'admin_email' )
+					'<a href="%1$s">',
+					sprintf( 'mailto:%1$s?subject=Email confirmation page error',
+						get_option( 'admin_email' )
+					)
+				
 				),
 				'</a>'
 			)
