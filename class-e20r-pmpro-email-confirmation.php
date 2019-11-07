@@ -3,7 +3,7 @@
 Plugin Name: E20R - Email Confirmation Reminder Shortcode for PMPro
 Plugin URI: http://eighty20results.com/paid-memberships-pro/e20r-pmpro-email-confirmation
 Description: Add shortcode and redirect functionality to let the user self-service and re-send the PMPro email confirmation message when they log in and haven't yet confirmed their email address.
-Version: 2.2
+Version: 2.3
 Author: Thomas at Eighty/20 Results by Wicked Strong Chicks, LLC <thomas@eighty20results.com>
 Author URI: https://eighty20results.com/thomas-sjolshagen/
 License: GPL2
@@ -51,7 +51,7 @@ class Email_Confirmation_Shortcode {
 	/**
 	 * Plugin Version
 	 */
-	const VERSION = '2.2';
+	const VERSION = '2.3';
 	/**
 	 * WP slug for the plugin (used in translations)
 	 */
