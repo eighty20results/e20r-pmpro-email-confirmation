@@ -3,7 +3,7 @@ Contributors: eighty20results
 Tags: eighty20results, pmpro, paid memberships pro, members, memberships, confirmation email, resend confirmation email, shortcode
 Requires at least: 5.0
 Tested up to: 5.3
-Stable tag: 2.3
+Stable tag: 2.4
 
 == Description ==
 

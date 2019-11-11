@@ -1,13 +1,13 @@
 {
   "name" : "E20R PMPro Email Confirmation Shortcode",
   "slug" : "e20r-pmpro-email-confirmation",
-  "download_url" : "https://eighty20results.com/protected-content/e20r-pmpro-email-confirmation/e20r-pmpro-email-confirmation-2.3.zip",
-  "version" : "2.3",
+  "download_url" : "https://eighty20results.com/protected-content/e20r-pmpro-email-confirmation/e20r-pmpro-email-confirmation-2.4.zip",
+  "version" : "2.4",
   "tested" : "5.3",
   "requires" : "5.0",
   "author" : "Thomas Sjolshagen <thomas@eighty20results.com>",
   "author_homepage" : "https://eighty20results.com/thomas-sjolshagen",
-  "last_updated" : "2019-11-07 16:30:00 MDT",
+  "last_updated" : "2019-11-10 18:00:00 MDT",
   "homepage" : "https://eighty20results.com/wordpress-plugins/e20r-pmpro-email-confirmation/",
   "sections" : {
     "description" : "<p>This plugin provides the [e20r_confirmation_form] short code. This short code generates a form to let members resend their PMPro Email Confirmation message. The message is sent, either to the specified email address, or to the user who is logged in when the \"Submit\"/\"Send Now\" button is clicked.</p><p>The short code supports the following attributes:</p><ul><li><p>header -- The header text to display on the form (string).</p></li><li><p>button_text -- The text to use on the \"Send Now\" button (string)</p></li><li><p>confirmation_msg: The message to display when the email is sent successfully (string).</p></li><li><p>not_logged_in_msg: The message to show if a user attempts to access the page where this short code is used, but that user isn't logged in to the system yet</p></li><li><p>confirmation_page_slug:&nbsp; The page slug for a page containing a confirmation message + help text, etc. If this attribute is defined, the value will take precedence over the 'confirmation_msg' text. (string: a valid page slug)</p></li><li><p>show_full_form: Should we display input fields for the form, or use default values (numeric: 0 = no, 1 = yes). The '0' value is typically only makes sense if the short code is being used on a page where the 'Redirect on login' settings (see below) point to.</p></li></ul><p>Using the \"PMP Email Conf\" settings page in the /wp-admin/ backend, you configure whether to enable redirecting an unverified member to a specific page (defined in the same location). That target page may contain the [e20r_confirmation_form] short code, or not.</p><p>This settings page will also ask you to select the target page of the redirect operation. The target page setting will cause a login operation to send an unverified member to this page. The [e20r_confirmation_form] short code does not <em>have</em>&nbsp;to be present on the target page.</p>",
