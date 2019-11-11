@@ -33,6 +33,11 @@ N/A
 
 == Changelog ==
 
+== 2.4 ==
+
+* BUG FIX: Update utilities library and move update-checker to Utilities
+* ENHANCEMENT: Updated build and composer to reflect new path to update checker
+
 == 2.3 ==
 
 * BUG FIX: Fatal PHP Error on some sites while processing license info

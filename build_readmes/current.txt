@@ -1,1 +1,2 @@
-BUG FIX: Fatal PHP Error on some sites while processing license info
+BUG FIX: Update utilities library and move update-checker to Utilities
+ENHANCEMENT: Updated build and composer to reflect new path to update checker
