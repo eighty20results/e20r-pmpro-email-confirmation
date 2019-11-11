@@ -3,7 +3,7 @@ Contributors: eighty20results
 Tags: eighty20results, pmpro, paid memberships pro, members, memberships, confirmation email, resend confirmation email, shortcode
 Requires at least: 5.0
 Tested up to: 5.3
-Stable tag: 2.0
+Stable tag: 2.4
 
 == Description ==
 
@@ -29,7 +29,32 @@ This settings page will also ask you to select the target page of the redirect o
 
 == Known/Possible Issues ==
 
+N/A
+
 == Changelog ==
+
+== 2.4 ==
+
+* BUG FIX: Update utilities library and move update-checker to Utilities
+* ENHANCEMENT: Updated build and composer to reflect new path to update checker
+
+== 2.3 ==
+
+* BUG FIX: Fatal PHP Error on some sites while processing license info
+
+== 2.2 ==
+
+* BUG FIX: Plugin build script misplaced the select2 library
+* BUG FIX: Set the license server URL in the plugin
+* BUG FIX: PHP Notice from License_Settings class
+* BUG FIX: Doubly encoded HTML for mailto: link
+* BUG FIX: Always getting 'unlicensed' when loading shortcode
+* BUG FIX: Login redirect would exit when processing non-TML actions
+* BUG FIX: Custom redirect handler for wp_login action
+* BUG FIX: Custom redirect handler for login_redirect filter
+* ENHANCEMENT: Don't worry about redirecting for AJAX operations
+* ENHANCEMENT: Add max-width/width for email input field on form
+* ENHANCEMENT: Add space to bottom of form
 
 == 2.0 ==
 

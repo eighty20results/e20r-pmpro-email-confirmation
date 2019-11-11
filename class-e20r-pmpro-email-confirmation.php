@@ -3,7 +3,7 @@
 Plugin Name: E20R - Email Confirmation Reminder Shortcode for PMPro
 Plugin URI: http://eighty20results.com/paid-memberships-pro/e20r-pmpro-email-confirmation
 Description: Add shortcode and redirect functionality to let the user self-service and re-send the PMPro email confirmation message when they log in and haven't yet confirmed their email address.
-Version: 2.0
+Version: 2.4
 Author: Thomas at Eighty/20 Results by Wicked Strong Chicks, LLC <thomas@eighty20results.com>
 Author URI: https://eighty20results.com/thomas-sjolshagen/
 License: GPL2
@@ -37,6 +37,10 @@ use E20R\PMPro\Addon\Email_Confirmation\Shortcode;
 use E20R\Utilities\Licensing\Licensing;
 use E20R\Utilities\Utilities;
 
+if ( ! defined( 'E20R_LICENSE_SERVER_URL' ) ) {
+	define( 'E20R_LICENSE_SERVER_URL', 'https://eighty20results.com' );
+}
+
 /**
  * Class Email_Confirmation_Shortcode
  *
@@ -47,7 +51,7 @@ class Email_Confirmation_Shortcode {
 	/**
 	 * Plugin Version
 	 */
-	const VERSION = '2.0';
+	const VERSION = '2.3';
 	/**
 	 * WP slug for the plugin (used in translations)
 	 */
@@ -201,7 +205,7 @@ class Email_Confirmation_Shortcode {
 			return;
 		}
 		
-		if ( false === Licensing::is_licensed( 'e20r_pmpmc' ) ) {
+		if ( false === Licensing::is_licensed( 'e20r_pmpec' ) ) {
 			return;
 		}
 		
@@ -273,23 +277,4 @@ try {
 
 add_action( 'plugins_loaded', array( Email_Confirmation_Shortcode::getInstance(), 'loadHooks' ) );
 
-/**
- * One-click update handler & checker
- */
-if ( ! class_exists( '\\Puc_v4_Factory' ) ) {
-	
-	$local_path  = plugin_dir_path( __FILE__ ) . 'lib/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
-	$plugin_path = plugin_dir_path( __FILE__ ) . 'includes/plugin-update-checker/plugin-update-checker.php';
-	
-	if ( file_exists( $plugin_path ) ) {
-		require $plugin_path;
-	} else if ( file_exists( $local_path ) ) {
-		require $local_path;
-	}
-}
-
-$plugin_updates = \Puc_v4_Factory::buildUpdateChecker(
-	sprintf( 'https://eighty20results.com/protected-content/%s/metadata.json', Email_Confirmation_Shortcode::plugin_slug ),
-	__FILE__,
-	Email_Confirmation_Shortcode::plugin_slug
-);
+Utilities::configureUpdateServerV4( 'e20r-pmpro-email-confirmation', plugin_dir_path( __FILE__ ) . 'class-e20r-pmpro-email-confirmation.php' );

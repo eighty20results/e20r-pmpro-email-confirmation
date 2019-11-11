@@ -38,3 +38,11 @@ p.e20r-success-msg {
 	padding: 10px;
 	color: white;
 }
+.e20r-recipient-email {
+	width: 100%;
+	max-width: 300px;
+	min-width: 300px;
+}
+.e20r-email-submit {
+	margin-bottom: 25px;
+}
